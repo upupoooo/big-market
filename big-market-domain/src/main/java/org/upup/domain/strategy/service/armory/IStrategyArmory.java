@@ -6,7 +6,5 @@ package org.upup.domain.strategy.service.armory;
  * @date 2024/2/24 17:55
  */
 public interface IStrategyArmory {
-    void assembleLotteryStrategy(Long strategyId);
-
-    Integer getRandomAwardId(Long strategyId);
+    boolean assembleLotteryStrategy(Long strategyId);
 }

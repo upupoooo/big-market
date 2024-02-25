@@ -1,6 +1,8 @@
 package org.upup.domain.strategy.repository;
 
 import org.upup.domain.strategy.model.entity.StrategyAwardEntity;
+import org.upup.domain.strategy.model.entity.StrategyEntity;
+import org.upup.domain.strategy.model.entity.StrategyRuleEntity;
 
 import java.math.BigDecimal;
 import java.util.List;
@@ -14,10 +16,16 @@ import java.util.Map;
 public interface IStrategyRepository {
     List<StrategyAwardEntity> queryStrategyAwardList(Long strategyId);
 
-    void storeStrategyAwardSearchRateTableMap(Long strategyId, int rateRange, Map<Integer, Integer> shuffleStrategyAwardSearchRateTableMap);
+    void storeStrategyAwardSearchRateTableMap(String key, int rateRange, Map<Integer, Integer> shuffleStrategyAwardSearchRateTableMap);
 
 
     int getRateRange(Long strategyId);
 
-    Integer getStrategyAwardAssemble(Long strategyId, int rateKey);
+    int getRateRange(String key);
+
+    Integer getStrategyAwardAssemble(String key, int rateKey);
+
+    StrategyEntity queryStrategyEntityByStrategyId(Long strategyId);
+
+    StrategyRuleEntity queryStrategyRule(Long strategyId, String ruleModel);
 }

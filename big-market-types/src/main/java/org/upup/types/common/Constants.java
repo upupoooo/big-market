@@ -3,7 +3,9 @@ package org.upup.types.common;
 public class Constants {
 
     public final static String SPLIT = ",";
-
+    public final static String COLON = ":";
+    public final static String SPACE = " ";
+    public final static String UNDERLINE = "_";
 
     public static class RedisKey {
         public static String STRATEGY_KEY = "big_market_strategy_key_";
@@ -16,6 +18,7 @@ public class Constants {
         public static String STRATEGY_AWARD_COUNT_QUERY_KEY = "strategy_award_count_query_key";
 
     }
+
 
 
 }
