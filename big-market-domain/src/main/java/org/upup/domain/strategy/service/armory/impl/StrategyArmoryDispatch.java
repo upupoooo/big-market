@@ -1,4 +1,4 @@
-package org.upup.domain.strategy.service.armory;
+package org.upup.domain.strategy.service.armory.impl;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -6,6 +6,8 @@ import org.upup.domain.strategy.model.entity.StrategyAwardEntity;
 import org.upup.domain.strategy.model.entity.StrategyEntity;
 import org.upup.domain.strategy.model.entity.StrategyRuleEntity;
 import org.upup.domain.strategy.repository.IStrategyRepository;
+import org.upup.domain.strategy.service.armory.IStrategyArmory;
+import org.upup.domain.strategy.service.armory.IStrategyDispatch;
 import org.upup.types.enums.ResponseCode;
 import org.upup.types.exception.AppException;
 
@@ -31,10 +33,7 @@ public class StrategyArmoryDispatch implements IStrategyArmory, IStrategyDispatc
     public boolean assembleLotteryStrategy(Long strategyId) {
         //1、查询策略配置
         List<StrategyAwardEntity> strategyAwardEntityList = strategyRepository.queryStrategyAwardList(strategyId);
-        if (strategyAwardEntityList.isEmpty()) {
-            log.info("empty strategyAwardEntityList ~~~");
-            return false;
-        }
+        if (null == strategyAwardEntityList) return true;
         assembleLotteryStrategy(String.valueOf(strategyId), strategyAwardEntityList);
 
         //2、权重策略配置-适用于rule-weight权重规则配置

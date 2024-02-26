@@ -1,6 +1,5 @@
 package org.upup.infrastructure.persistent.repository;
 
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Repository;
 import org.upup.domain.strategy.model.entity.StrategyAwardEntity;
 import org.upup.domain.strategy.model.entity.StrategyEntity;
@@ -16,7 +15,6 @@ import org.upup.infrastructure.persistent.redis.IRedisService;
 import org.upup.types.common.Constants;
 
 import javax.annotation.Resource;
-import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -45,7 +43,7 @@ public class StrategyRepository implements IStrategyRepository {
         if (null != strategyAwardEntities && !strategyAwardEntities.isEmpty()) return strategyAwardEntities;
         //从库中查询
         List<StrategyAward> strategyAwardList = strategyAwardDao.queryStrategyAwardListByStrategyId(strategyId);
-        if (strategyAwardList.isEmpty()) return new ArrayList<>();
+        if (strategyAwardList.isEmpty()) return null;
 
         List<StrategyAwardEntity> strategyAwardEntityList = new ArrayList<>();
         for (StrategyAward strategyAward : strategyAwardList) {
@@ -116,5 +114,10 @@ public class StrategyRepository implements IStrategyRepository {
                 .ruleValue(strategyRule.getRuleValue())
                 .ruleDesc(strategyRule.getRuleDesc())
                 .build();
+    }
+
+    @Override
+    public String queryStrategyRuleValue(Long strategyId, Integer awardId, String ruleModel) {
+        return strategyRuleDao.queryStrategyRuleValue(strategyId,awardId,ruleModel);
     }
 }

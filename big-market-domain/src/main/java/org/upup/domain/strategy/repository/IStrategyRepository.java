@@ -4,7 +4,6 @@ import org.upup.domain.strategy.model.entity.StrategyAwardEntity;
 import org.upup.domain.strategy.model.entity.StrategyEntity;
 import org.upup.domain.strategy.model.entity.StrategyRuleEntity;
 
-import java.math.BigDecimal;
 import java.util.List;
 import java.util.Map;
 
@@ -28,4 +27,6 @@ public interface IStrategyRepository {
     StrategyEntity queryStrategyEntityByStrategyId(Long strategyId);
 
     StrategyRuleEntity queryStrategyRule(Long strategyId, String ruleModel);
+
+    String queryStrategyRuleValue(Long strategyId, Integer awardId, String ruleModel);
 }
