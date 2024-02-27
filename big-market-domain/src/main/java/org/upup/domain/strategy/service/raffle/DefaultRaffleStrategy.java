@@ -36,14 +36,16 @@ public class DefaultRaffleStrategy extends AbstractRaffleStrategy {
 
     @Override
     protected RuleActionEntity<RuleActionEntity.RaffleBeforeEntity> doCheckRaffleBeforeLogic(RaffleFactorEntity raffleFactorEntity, String... logics) {
+        //key-value:rule_weight-RuleWeightLogicFilter    利用工厂设计模式，获取加了@LogicStrategy自定义注解的bean，并进行组装返回
         Map<String, ILogicFilter<RuleActionEntity.RaffleBeforeEntity>> logicFilterGroupMap = logicFactory.openLogicFilter();
 
-        // 黑名单规则优先过滤
+        // 黑名单规则优先过滤-判断是否存在rule_blacklist
         String ruleBackList = Arrays.stream(logics).filter(str -> str.contains(DefaultLogicFactory.LogicModel.RULE_BLACKLIST.getCode()))
                 .findFirst()
                 .orElse(null);
 
         if (StringUtils.isNotBlank(ruleBackList)) {
+            //获取加了@LogicStrategy(logicMode = DefaultLogicFactory.LogicModel.RULE_BLACKLIST) 的bean
             ILogicFilter<RuleActionEntity.RaffleBeforeEntity> logicFilter = logicFilterGroupMap.get(DefaultLogicFactory.LogicModel.RULE_BLACKLIST.getCode());
             RuleMatterEntity ruleMatterEntity = new RuleMatterEntity();
             ruleMatterEntity.setUserId(raffleFactorEntity.getUserId());
@@ -57,9 +59,30 @@ public class DefaultRaffleStrategy extends AbstractRaffleStrategy {
             }
         }
 
+        // 白名单规则优先优先级同黑名单一致-判断是否存在rule_whitelist
+        String ruleWhiteList = Arrays.stream(logics).filter(str -> str.contains(DefaultLogicFactory.LogicModel.RULE_WHITELIST.getCode()))
+                .findFirst()
+                .orElse(null);
+
+        if (StringUtils.isNotBlank(ruleWhiteList)) {
+            //获取加了@LogicStrategy(logicMode = DefaultLogicFactory.LogicModel.RULE_WHITELIST) 的bean
+            ILogicFilter<RuleActionEntity.RaffleBeforeEntity> logicFilter = logicFilterGroupMap.get(DefaultLogicFactory.LogicModel.RULE_WHITELIST.getCode());
+            RuleMatterEntity ruleMatterEntity = new RuleMatterEntity();
+            ruleMatterEntity.setUserId(raffleFactorEntity.getUserId());
+            ruleMatterEntity.setAwardId(ruleMatterEntity.getAwardId());
+            ruleMatterEntity.setStrategyId(raffleFactorEntity.getStrategyId());
+            ruleMatterEntity.setRuleModel(DefaultLogicFactory.LogicModel.RULE_WHITELIST.getCode());
+
+            RuleActionEntity<RuleActionEntity.RaffleBeforeEntity> ruleActionEntity = logicFilter.filter(ruleMatterEntity);
+            if (!RuleLogicCheckTypeVO.ALLOW.getCode().equals(ruleActionEntity.getCode())) {
+                return ruleActionEntity;
+            }
+        }
+
         // 顺序过滤剩余规则
         List<String> ruleList = Arrays.stream(logics)
                 .filter(s -> !s.equals(DefaultLogicFactory.LogicModel.RULE_BLACKLIST.getCode()))
+                .filter(s -> !s.equals(DefaultLogicFactory.LogicModel.RULE_WHITELIST.getCode()))
                 .collect(Collectors.toList());
         if (ruleList.isEmpty()) return null;
         RuleActionEntity<RuleActionEntity.RaffleBeforeEntity> ruleActionEntity = null;

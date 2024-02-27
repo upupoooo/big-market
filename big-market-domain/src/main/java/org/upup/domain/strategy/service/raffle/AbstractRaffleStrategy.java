@@ -43,7 +43,7 @@ public abstract class AbstractRaffleStrategy implements IRaffleStrategy {
         // 2. 策略查询
         StrategyEntity strategy = repository.queryStrategyEntityByStrategyId(strategyId);
         // 3. 抽奖前 - 规则过滤
-        RuleActionEntity<RuleActionEntity.RaffleBeforeEntity> ruleActionEntity = this.doCheckRaffleBeforeLogic(RaffleFactorEntity.builder().userId(userId).strategyId(strategyId).build(), strategy.ruleModels());
+        RuleActionEntity<RuleActionEntity.RaffleBeforeEntity> ruleActionEntity = this.doCheckRaffleBeforeLogic(raffleFactorEntity, strategy.ruleModels());
 
         if (RuleLogicCheckTypeVO.TAKE_OVER.getCode().equals(ruleActionEntity.getCode())) {
             if (DefaultLogicFactory.LogicModel.RULE_BLACKLIST.getCode().equals(ruleActionEntity.getRuleModel())) {
@@ -51,7 +51,12 @@ public abstract class AbstractRaffleStrategy implements IRaffleStrategy {
                 return RaffleAwardEntity.builder()
                         .awardId(ruleActionEntity.getData().getAwardId())
                         .build();
-            } else if (DefaultLogicFactory.LogicModel.RULE_WIGHT.getCode().equals(ruleActionEntity.getRuleModel())) {
+            }else if (DefaultLogicFactory.LogicModel.RULE_WHITELIST.getCode().equals(ruleActionEntity.getRuleModel())){
+                // 白名单返回固定的奖品ID，解锁全部模型
+                return RaffleAwardEntity.builder()
+                        .awardId(ruleActionEntity.getData().getAwardId())
+                        .build();
+            }else if (DefaultLogicFactory.LogicModel.RULE_WIGHT.getCode().equals(ruleActionEntity.getRuleModel())) {
                 // 权重根据返回的信息进行抽奖
                 RuleActionEntity.RaffleBeforeEntity raffleBeforeEntity = ruleActionEntity.getData();
                 String ruleWeightValueKey = raffleBeforeEntity.getRuleWeightValueKey();
