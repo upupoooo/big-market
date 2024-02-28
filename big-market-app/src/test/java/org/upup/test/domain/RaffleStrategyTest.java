@@ -12,8 +12,8 @@ import org.upup.domain.strategy.model.entity.RaffleAwardEntity;
 import org.upup.domain.strategy.model.entity.RaffleFactorEntity;
 import org.upup.domain.strategy.service.armory.IStrategyArmory;
 import org.upup.domain.strategy.service.raffle.IRaffleStrategy;
-import org.upup.domain.strategy.service.rule.impl.RuleLockLogicFilter;
-import org.upup.domain.strategy.service.rule.impl.RuleWeightLogicFilter;
+import org.upup.domain.strategy.service.rule.chain.impl.RuleWeightLogicChain;
+import org.upup.domain.strategy.service.rule.filter.impl.RuleLockLogicFilter;
 
 import javax.annotation.Resource;
 
@@ -32,7 +32,7 @@ public class RaffleStrategyTest {
     private IRaffleStrategy raffleStrategy;
 
     @Resource
-    private RuleWeightLogicFilter ruleWeightLogicFilter;
+    private RuleWeightLogicChain ruleWeightLogicChain;
     @Resource
     private RuleLockLogicFilter ruleLockLogicFilter;
     @Resource
@@ -44,7 +44,7 @@ public class RaffleStrategyTest {
         log.info("装配结果:{}",strategyArmory.assembleLotteryStrategy(100002L));
         log.info("装配结果:{}",strategyArmory.assembleLotteryStrategy(100003L));
 
-        ReflectionTestUtils.setField(ruleWeightLogicFilter, "userScore", 40500L);
+        ReflectionTestUtils.setField(ruleWeightLogicChain, "userScore", 40500L);
         ReflectionTestUtils.setField(ruleLockLogicFilter, "userRaffleCount", 10L);
     }
 

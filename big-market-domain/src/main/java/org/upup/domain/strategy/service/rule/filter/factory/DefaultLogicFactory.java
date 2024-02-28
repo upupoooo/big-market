@@ -1,4 +1,4 @@
-package org.upup.domain.strategy.service.rule.factory;
+package org.upup.domain.strategy.service.rule.filter.factory;
 
 import com.alibaba.fastjson2.util.AnnotationUtils;
 import lombok.AllArgsConstructor;
@@ -6,7 +6,7 @@ import lombok.Getter;
 import org.springframework.stereotype.Component;
 import org.upup.domain.strategy.model.entity.RuleActionEntity;
 import org.upup.domain.strategy.service.annotation.LogicStrategy;
-import org.upup.domain.strategy.service.rule.ILogicFilter;
+import org.upup.domain.strategy.service.rule.filter.ILogicFilter;
 
 import java.util.List;
 import java.util.Map;

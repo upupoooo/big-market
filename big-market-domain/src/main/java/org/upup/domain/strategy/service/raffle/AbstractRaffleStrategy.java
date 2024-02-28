@@ -10,7 +10,7 @@ import org.upup.domain.strategy.model.vo.RuleLogicCheckTypeVO;
 import org.upup.domain.strategy.model.vo.StrategyAwardRuleModelVO;
 import org.upup.domain.strategy.repository.IStrategyRepository;
 import org.upup.domain.strategy.service.armory.IStrategyDispatch;
-import org.upup.domain.strategy.service.rule.factory.DefaultLogicFactory;
+import org.upup.domain.strategy.service.rule.filter.factory.DefaultLogicFactory;
 import org.upup.types.enums.ResponseCode;
 import org.upup.types.exception.AppException;
 

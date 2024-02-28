@@ -1,4 +1,4 @@
-package org.upup.domain.strategy.service.rule;
+package org.upup.domain.strategy.service.rule.filter;
 
 import org.upup.domain.strategy.model.entity.RuleActionEntity;
 import org.upup.domain.strategy.model.entity.RuleMatterEntity;

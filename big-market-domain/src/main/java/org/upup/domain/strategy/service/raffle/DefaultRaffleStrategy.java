@@ -9,8 +9,8 @@ import org.upup.domain.strategy.model.entity.RuleMatterEntity;
 import org.upup.domain.strategy.model.vo.RuleLogicCheckTypeVO;
 import org.upup.domain.strategy.repository.IStrategyRepository;
 import org.upup.domain.strategy.service.armory.IStrategyDispatch;
-import org.upup.domain.strategy.service.rule.ILogicFilter;
-import org.upup.domain.strategy.service.rule.factory.DefaultLogicFactory;
+import org.upup.domain.strategy.service.rule.filter.ILogicFilter;
+import org.upup.domain.strategy.service.rule.filter.factory.DefaultLogicFactory;
 
 import javax.annotation.Resource;
 import java.util.Arrays;

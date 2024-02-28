@@ -1,6 +1,6 @@
 package org.upup.domain.strategy.service.annotation;
 
-import org.upup.domain.strategy.service.rule.factory.DefaultLogicFactory;
+import org.upup.domain.strategy.service.rule.filter.factory.DefaultLogicFactory;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;

@@ -1,4 +1,4 @@
-package org.upup.domain.strategy.service.rule.impl;
+package org.upup.domain.strategy.service.rule.filter.impl;
 
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
@@ -8,8 +8,8 @@ import org.upup.domain.strategy.model.entity.RuleMatterEntity;
 import org.upup.domain.strategy.model.vo.RuleLogicCheckTypeVO;
 import org.upup.domain.strategy.repository.IStrategyRepository;
 import org.upup.domain.strategy.service.annotation.LogicStrategy;
-import org.upup.domain.strategy.service.rule.ILogicFilter;
-import org.upup.domain.strategy.service.rule.factory.DefaultLogicFactory;
+import org.upup.domain.strategy.service.rule.filter.ILogicFilter;
+import org.upup.domain.strategy.service.rule.filter.factory.DefaultLogicFactory;
 
 import javax.annotation.Resource;
 
