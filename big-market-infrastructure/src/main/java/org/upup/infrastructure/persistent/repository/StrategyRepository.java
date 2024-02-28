@@ -4,6 +4,7 @@ import org.springframework.stereotype.Repository;
 import org.upup.domain.strategy.model.entity.StrategyAwardEntity;
 import org.upup.domain.strategy.model.entity.StrategyEntity;
 import org.upup.domain.strategy.model.entity.StrategyRuleEntity;
+import org.upup.domain.strategy.model.vo.StrategyAwardRuleModelVO;
 import org.upup.domain.strategy.repository.IStrategyRepository;
 import org.upup.infrastructure.persistent.dao.IStrategyAwardDao;
 import org.upup.infrastructure.persistent.dao.IStrategyDao;
@@ -118,6 +119,15 @@ public class StrategyRepository implements IStrategyRepository {
 
     @Override
     public String queryStrategyRuleValue(Long strategyId, Integer awardId, String ruleModel) {
-        return strategyRuleDao.queryStrategyRuleValue(strategyId,awardId,ruleModel);
+        return strategyRuleDao.queryStrategyRuleValue(strategyId, awardId, ruleModel);
+    }
+
+    @Override
+    public StrategyAwardRuleModelVO queryStrategyAwardRuleModelVO(Long strategyId, Integer awardId) {
+        StrategyAward strategyAward = strategyAwardDao.queryStrategyAward(strategyId, awardId);
+        if (null == strategyAward) return null;
+        return StrategyAwardRuleModelVO.builder()
+                .ruleModels(strategyAward.getRuleModels())
+                .build();
     }
 }
