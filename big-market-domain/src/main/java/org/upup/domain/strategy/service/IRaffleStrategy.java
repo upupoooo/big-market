@@ -1,4 +1,4 @@
-package org.upup.domain.strategy.service.raffle;
+package org.upup.domain.strategy.service;
 
 import org.upup.domain.strategy.model.entity.RaffleAwardEntity;
 import org.upup.domain.strategy.model.entity.RaffleFactorEntity;

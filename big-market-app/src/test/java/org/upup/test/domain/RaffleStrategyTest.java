@@ -11,7 +11,7 @@ import org.springframework.test.util.ReflectionTestUtils;
 import org.upup.domain.strategy.model.entity.RaffleAwardEntity;
 import org.upup.domain.strategy.model.entity.RaffleFactorEntity;
 import org.upup.domain.strategy.service.armory.IStrategyArmory;
-import org.upup.domain.strategy.service.raffle.IRaffleStrategy;
+import org.upup.domain.strategy.service.IRaffleStrategy;
 import org.upup.domain.strategy.service.rule.chain.impl.RuleWeightLogicChain;
 import org.upup.domain.strategy.service.rule.filter.impl.RuleLockLogicFilter;
 
