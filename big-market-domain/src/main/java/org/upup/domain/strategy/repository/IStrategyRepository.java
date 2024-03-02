@@ -3,6 +3,7 @@ package org.upup.domain.strategy.repository;
 import org.upup.domain.strategy.model.entity.StrategyAwardEntity;
 import org.upup.domain.strategy.model.entity.StrategyEntity;
 import org.upup.domain.strategy.model.entity.StrategyRuleEntity;
+import org.upup.domain.strategy.model.vo.RuleTreeVO;
 import org.upup.domain.strategy.model.vo.StrategyAwardRuleModelVO;
 
 import java.util.List;
@@ -33,4 +34,6 @@ public interface IStrategyRepository {
     String queryStrategyRuleValue(Long strategyId, String ruleModel);
 
     StrategyAwardRuleModelVO queryStrategyAwardRuleModelVO(Long strategyId, Integer awardId);
+
+    RuleTreeVO queryRuleTreeVOByTreeId(String treeId);
 }

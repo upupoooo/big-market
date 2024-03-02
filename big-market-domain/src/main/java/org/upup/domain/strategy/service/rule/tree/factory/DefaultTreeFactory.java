@@ -1,4 +1,4 @@
-package org.upup.domain.strategy.service.rule.tree.factory.engine;
+package org.upup.domain.strategy.service.rule.tree.factory;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import org.upup.domain.strategy.model.vo.RuleLogicCheckTypeVO;
 import org.upup.domain.strategy.model.vo.RuleTreeVO;
 import org.upup.domain.strategy.service.rule.tree.ILogicTreeNode;
+import org.upup.domain.strategy.service.rule.tree.factory.engine.IDecisionTreeEngine;
 import org.upup.domain.strategy.service.rule.tree.factory.engine.impl.DecisionTreeEngine;
 
 import java.util.Map;
@@ -39,7 +40,7 @@ public class DefaultTreeFactory {
     @NoArgsConstructor
     public static class TreeActionEntity {
         private RuleLogicCheckTypeVO ruleLogicCheckType;
-        private StrategyAwardData strategyAwardData;
+        private StrategyAwardVO strategyAwardVO;
     }
 
 
@@ -47,7 +48,7 @@ public class DefaultTreeFactory {
     @Builder
     @AllArgsConstructor
     @NoArgsConstructor
-    public static class StrategyAwardData{
+    public static class StrategyAwardVO{
         /** 抽奖奖品ID - 内部流转使用 */
         private Integer awardId;
         /** 抽奖奖品规则 */

@@ -4,7 +4,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 import org.upup.domain.strategy.model.vo.RuleLogicCheckTypeVO;
 import org.upup.domain.strategy.service.rule.tree.ILogicTreeNode;
-import org.upup.domain.strategy.service.rule.tree.factory.engine.DefaultTreeFactory;
+import org.upup.domain.strategy.service.rule.tree.factory.DefaultTreeFactory;
 
 /**
  * @author upup

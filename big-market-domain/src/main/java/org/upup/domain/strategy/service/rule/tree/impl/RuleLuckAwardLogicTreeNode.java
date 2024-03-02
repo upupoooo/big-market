@@ -4,7 +4,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 import org.upup.domain.strategy.model.vo.RuleLogicCheckTypeVO;
 import org.upup.domain.strategy.service.rule.tree.ILogicTreeNode;
-import org.upup.domain.strategy.service.rule.tree.factory.engine.DefaultTreeFactory;
+import org.upup.domain.strategy.service.rule.tree.factory.DefaultTreeFactory;
 
 /**
  * @author upup
@@ -19,7 +19,7 @@ public class RuleLuckAwardLogicTreeNode implements ILogicTreeNode {
     public DefaultTreeFactory.TreeActionEntity logic(String userId, Long strategyId, Integer awardId) {
         return DefaultTreeFactory.TreeActionEntity.builder()
                 .ruleLogicCheckType(RuleLogicCheckTypeVO.TAKE_OVER)
-                .strategyAwardData(DefaultTreeFactory.StrategyAwardData.builder()
+                .strategyAwardVO(DefaultTreeFactory.StrategyAwardVO.builder()
                         .awardId(awardId)
                         .awardRuleValue("1,100")
                         .build())

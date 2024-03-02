@@ -1,6 +1,6 @@
 package org.upup.domain.strategy.service.rule.tree;
 
-import org.upup.domain.strategy.service.rule.tree.factory.engine.DefaultTreeFactory;
+import org.upup.domain.strategy.service.rule.tree.factory.DefaultTreeFactory;
 
 /**
  * @author upup

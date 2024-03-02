@@ -4,6 +4,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 import org.upup.domain.strategy.repository.IStrategyRepository;
 import org.upup.domain.strategy.service.rule.chain.AbstractLogicChain;
+import org.upup.domain.strategy.service.rule.chain.factory.DefaultChainFactory;
 import org.upup.types.common.Constants;
 
 import javax.annotation.Resource;
@@ -23,11 +24,11 @@ public class WhiteListLogicChain extends AbstractLogicChain {
 
     @Override
     protected String ruleModel() {
-        return "rule_whitelist";
+        return DefaultChainFactory.LogicModel.RULE_WHITELIST.getCode();
     }
 
     @Override
-    public Integer logic(String userId, Long strategyId) {
+    public DefaultChainFactory.StrategyAwardVO logic(String userId, Long strategyId) {
         log.info("抽奖责任链-白名单开始 userId: {} strategyId: {} ruleModel: {}", userId, strategyId, ruleModel());
 
         // 查询规则值配置
@@ -39,7 +40,10 @@ public class WhiteListLogicChain extends AbstractLogicChain {
         String[] userBlackIds = splitRuleValue[1].split(Constants.SPLIT);
         if (Arrays.asList(userBlackIds).contains(userId)) {
             log.info("抽奖责任链-白名单接管 userId: {} strategyId: {} ruleModel: {} awardId: {}", userId, strategyId, ruleModel(), awardId);
-            return awardId;
+            return DefaultChainFactory.StrategyAwardVO.builder()
+                    .awardId(awardId)
+                    .logicModel(DefaultChainFactory.LogicModel.RULE_WHITELIST.getCode())
+                    .build();
         }
 
         // 过滤其他责任链

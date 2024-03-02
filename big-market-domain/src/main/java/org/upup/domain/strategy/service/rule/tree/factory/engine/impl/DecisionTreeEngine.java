@@ -6,7 +6,7 @@ import org.upup.domain.strategy.model.vo.RuleTreeNodeLineVO;
 import org.upup.domain.strategy.model.vo.RuleTreeNodeVO;
 import org.upup.domain.strategy.model.vo.RuleTreeVO;
 import org.upup.domain.strategy.service.rule.tree.ILogicTreeNode;
-import org.upup.domain.strategy.service.rule.tree.factory.engine.DefaultTreeFactory;
+import org.upup.domain.strategy.service.rule.tree.factory.DefaultTreeFactory;
 import org.upup.domain.strategy.service.rule.tree.factory.engine.IDecisionTreeEngine;
 
 import java.util.List;
@@ -29,8 +29,8 @@ public class DecisionTreeEngine implements IDecisionTreeEngine {
     }
 
     @Override
-    public DefaultTreeFactory.StrategyAwardData process(String userId, Long strategyId, Integer awardId) {
-        DefaultTreeFactory.StrategyAwardData strategyAwardData = null;
+    public DefaultTreeFactory.StrategyAwardVO process(String userId, Long strategyId, Integer awardId) {
+        DefaultTreeFactory.StrategyAwardVO strategyAwardData = null;
         // 获取基础信息
         String nextNode = ruleTreeVO.getTreeRootRuleNode();
         Map<String, RuleTreeNodeVO> treeNodeMap = ruleTreeVO.getTreeNodeMap();
@@ -43,7 +43,7 @@ public class DecisionTreeEngine implements IDecisionTreeEngine {
             // 决策节点计算
             DefaultTreeFactory.TreeActionEntity loginEntity = logicTreeNode.logic(userId, strategyId, awardId);
             RuleLogicCheckTypeVO ruleLogicCheckTypeVO = loginEntity.getRuleLogicCheckType();
-            strategyAwardData = loginEntity.getStrategyAwardData();
+            strategyAwardData = loginEntity.getStrategyAwardVO();
             log.info("决策树引擎【{}】treeId:{} node:{} code:{}", ruleTreeVO.getTreeName(), ruleTreeVO.getTreeId(), nextNode, ruleLogicCheckTypeVO.getCode());
 
             nextNode = nextNode(ruleLogicCheckTypeVO.getCode(), ruleTreeNode.getTreeNodeLineVOList());

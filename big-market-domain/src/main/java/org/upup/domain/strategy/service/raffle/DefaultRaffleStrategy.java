@@ -1,23 +1,16 @@
 package org.upup.domain.strategy.service.raffle;
 
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
-import org.upup.domain.strategy.model.entity.RaffleFactorEntity;
-import org.upup.domain.strategy.model.entity.RuleActionEntity;
-import org.upup.domain.strategy.model.entity.RuleMatterEntity;
-import org.upup.domain.strategy.model.vo.RuleLogicCheckTypeVO;
+import org.upup.domain.strategy.model.vo.RuleTreeVO;
+import org.upup.domain.strategy.model.vo.StrategyAwardRuleModelVO;
 import org.upup.domain.strategy.repository.IStrategyRepository;
 import org.upup.domain.strategy.service.AbstractRaffleStrategy;
 import org.upup.domain.strategy.service.armory.IStrategyDispatch;
-import org.upup.domain.strategy.service.rule.filter.ILogicFilter;
-import org.upup.domain.strategy.service.rule.filter.factory.DefaultLogicFactory;
-
-import javax.annotation.Resource;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Map;
-import java.util.stream.Collectors;
+import org.upup.domain.strategy.service.rule.chain.ILogicChain;
+import org.upup.domain.strategy.service.rule.chain.factory.DefaultChainFactory;
+import org.upup.domain.strategy.service.rule.tree.factory.DefaultTreeFactory;
+import org.upup.domain.strategy.service.rule.tree.factory.engine.IDecisionTreeEngine;
 
 /**
  * @author upup
@@ -28,14 +21,11 @@ import java.util.stream.Collectors;
 @Service
 public class DefaultRaffleStrategy extends AbstractRaffleStrategy {
 
-    @Resource
-    private DefaultLogicFactory logicFactory;
-
-    public DefaultRaffleStrategy(IStrategyRepository repository, IStrategyDispatch strategyDispatch) {
-        super(repository, strategyDispatch);
+    public DefaultRaffleStrategy(IStrategyRepository repository, IStrategyDispatch strategyDispatch, DefaultChainFactory defaultChainFactory, DefaultTreeFactory defaultTreeFactory) {
+        super(repository, strategyDispatch, defaultChainFactory, defaultTreeFactory);
     }
 
-    @Override
+    /*@Override
     protected RuleActionEntity<RuleActionEntity.RaffleBeforeEntity> doCheckRaffleBeforeLogic(RaffleFactorEntity raffleFactorEntity, String... logics) {
         if (null == logics || 0 == logics.length)
             return RuleActionEntity.<RuleActionEntity.RaffleBeforeEntity>builder()
@@ -143,5 +133,28 @@ public class DefaultRaffleStrategy extends AbstractRaffleStrategy {
                     .info(RuleLogicCheckTypeVO.ALLOW.getInfo())
                     .build();
         return null;
+    }*/
+
+
+    @Override
+    public DefaultChainFactory.StrategyAwardVO raffleLogicChain(String userId, Long strategyId) {
+        ILogicChain logicChain = defaultChainFactory.openLogicChain(strategyId);
+        return logicChain.logic(userId, strategyId);
+    }
+
+    @Override
+    public DefaultTreeFactory.StrategyAwardVO raffleLogicTree(String userId, Long strategyId, Integer awardId) {
+        StrategyAwardRuleModelVO strategyAwardRuleModelVO = repository.queryStrategyAwardRuleModelVO(strategyId, awardId);
+        if (null == strategyAwardRuleModelVO) {
+            return DefaultTreeFactory.StrategyAwardVO.builder()
+                    .awardId(awardId)
+                    .build();
+        }
+        RuleTreeVO ruleTreeVO = repository.queryRuleTreeVOByTreeId(strategyAwardRuleModelVO.getRuleModels());
+        if (null == ruleTreeVO) {
+            throw new RuntimeException("存在抽奖策略配置的规则模型 Key，未在库表 rule_tree、rule_tree_node、rule_tree_line 配置对应的规则树信息 " + strategyAwardRuleModelVO.getRuleModels());
+        }
+        IDecisionTreeEngine treeEngine = defaultTreeFactory.openLogicTree(ruleTreeVO);
+        return treeEngine.process(userId, strategyId, awardId);
     }
 }
