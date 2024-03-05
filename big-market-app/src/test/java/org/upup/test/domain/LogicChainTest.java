@@ -11,7 +11,6 @@ import org.upup.domain.strategy.service.armory.IStrategyArmory;
 import org.upup.domain.strategy.service.rule.chain.ILogicChain;
 import org.upup.domain.strategy.service.rule.chain.factory.DefaultChainFactory;
 import org.upup.domain.strategy.service.rule.chain.impl.RuleWeightLogicChain;
-import org.upup.domain.strategy.service.rule.filter.impl.RuleLockLogicFilter;
 
 import javax.annotation.Resource;
 
@@ -27,8 +26,6 @@ public class LogicChainTest {
     @Resource
     private RuleWeightLogicChain ruleWeightLogicChain;
     @Resource
-    private RuleLockLogicFilter ruleLockLogicFilter;
-    @Resource
     private IStrategyArmory strategyArmory;
     @Resource
     private DefaultChainFactory defaultChainFactory;
@@ -40,7 +37,6 @@ public class LogicChainTest {
         log.info("装配结果:{}",strategyArmory.assembleLotteryStrategy(100003L));
 
         ReflectionTestUtils.setField(ruleWeightLogicChain, "userScore", 40500L);
-        ReflectionTestUtils.setField(ruleLockLogicFilter, "userRaffleCount", 10L);
     }
 
     @Test

@@ -5,6 +5,7 @@ import org.upup.domain.strategy.model.entity.StrategyEntity;
 import org.upup.domain.strategy.model.entity.StrategyRuleEntity;
 import org.upup.domain.strategy.model.vo.RuleTreeVO;
 import org.upup.domain.strategy.model.vo.StrategyAwardRuleModelVO;
+import org.upup.domain.strategy.model.vo.StrategyAwardStockKeyVO;
 
 import java.util.List;
 import java.util.Map;
@@ -19,7 +20,6 @@ public interface IStrategyRepository {
 
     void storeStrategyAwardSearchRateTableMap(String key, int rateRange, Map<Integer, Integer> shuffleStrategyAwardSearchRateTableMap);
 
-
     int getRateRange(Long strategyId);
 
     int getRateRange(String key);
@@ -31,9 +31,20 @@ public interface IStrategyRepository {
     StrategyRuleEntity queryStrategyRule(Long strategyId, String ruleModel);
 
     String queryStrategyRuleValue(Long strategyId, Integer awardId, String ruleModel);
+
     String queryStrategyRuleValue(Long strategyId, String ruleModel);
 
     StrategyAwardRuleModelVO queryStrategyAwardRuleModelVO(Long strategyId, Integer awardId);
 
     RuleTreeVO queryRuleTreeVOByTreeId(String treeId);
+
+    void cacheStrategyAwardCount(String cacheKey, Integer awardCount);
+
+    StrategyAwardStockKeyVO takeQueueValue();
+
+    void reduceStrategyAwardStock(Long strategyId, Integer awardId);
+
+    Boolean subtractionAwardStock(String cacheKey);
+
+    void awardStockConsumeSendQueue(StrategyAwardStockKeyVO strategyAwardStockKeyVO);
 }

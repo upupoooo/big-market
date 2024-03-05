@@ -10,12 +10,14 @@ import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.util.ReflectionTestUtils;
 import org.upup.domain.strategy.model.entity.RaffleAwardEntity;
 import org.upup.domain.strategy.model.entity.RaffleFactorEntity;
-import org.upup.domain.strategy.service.armory.IStrategyArmory;
+import org.upup.domain.strategy.service.IRaffleStock;
 import org.upup.domain.strategy.service.IRaffleStrategy;
+import org.upup.domain.strategy.service.armory.IStrategyArmory;
 import org.upup.domain.strategy.service.rule.chain.impl.RuleWeightLogicChain;
-import org.upup.domain.strategy.service.rule.filter.impl.RuleLockLogicFilter;
+import org.upup.domain.strategy.service.rule.tree.impl.RuleLockLogicTreeNode;
 
 import javax.annotation.Resource;
+import java.util.concurrent.CountDownLatch;
 
 /**
  * @author upup
@@ -29,37 +31,47 @@ import javax.annotation.Resource;
 public class RaffleStrategyTest {
 
     @Resource
+    private IStrategyArmory strategyArmory;
+    @Resource
     private IRaffleStrategy raffleStrategy;
-
     @Resource
     private RuleWeightLogicChain ruleWeightLogicChain;
     @Resource
-    private RuleLockLogicFilter ruleLockLogicFilter;
+    private RuleLockLogicTreeNode ruleLockLogicTreeNode;
     @Resource
-    private IStrategyArmory strategyArmory;
+    private IRaffleStock raffleStock;
+
 
     @Before
     public void setUp() {
-        log.info("装配结果:{}",strategyArmory.assembleLotteryStrategy(100001L));
-        log.info("装配结果:{}",strategyArmory.assembleLotteryStrategy(100002L));
-        log.info("装配结果:{}",strategyArmory.assembleLotteryStrategy(100003L));
+        // 策略装配 100001、100002、100003
+//        log.info("测试结果：{}", strategyArmory.assembleLotteryStrategy(100001L));
+        log.info("测试结果：{}", strategyArmory.assembleLotteryStrategy(100006L));
 
-        ReflectionTestUtils.setField(ruleWeightLogicChain, "userScore", 40500L);
-        ReflectionTestUtils.setField(ruleLockLogicFilter, "userRaffleCount", 10L);
+        // 通过反射 mock 规则中的值
+        ReflectionTestUtils.setField(ruleWeightLogicChain, "userScore", 4900L);
+        ReflectionTestUtils.setField(ruleLockLogicTreeNode, "userRaffleCount", 10L);
+
     }
 
     @Test
-    public void test_performRaffle() {
-        RaffleFactorEntity raffleFactorEntity = RaffleFactorEntity.builder()
-                .userId("upup1")
-                .strategyId(100001L)
-                .build();
+    public void test_performRaffle() throws InterruptedException {
+        for (int i = 0; i < 3; i++) {
+            RaffleFactorEntity raffleFactorEntity = RaffleFactorEntity.builder()
+                    .userId("upup")
+                    .strategyId(100006L)
+                    .build();
 
-        RaffleAwardEntity raffleAwardEntity = raffleStrategy.performRaffle(raffleFactorEntity);
+            RaffleAwardEntity raffleAwardEntity = raffleStrategy.performRaffle(raffleFactorEntity);
 
-        log.info("请求参数：{}", JSON.toJSONString(raffleFactorEntity));
-        log.info("测试结果：{}", JSON.toJSONString(raffleAwardEntity));
+            log.info("请求参数：{}", JSON.toJSONString(raffleFactorEntity));
+            log.info("测试结果：{}", JSON.toJSONString(raffleAwardEntity));
+        }
+
+        // 等待 UpdateAwardStockJob 消费队列
+        new CountDownLatch(1).await();
     }
+
 
     @Test
     public void test_performRaffle_blacklist() {
