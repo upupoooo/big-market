@@ -59,9 +59,12 @@ public class StrategyRepository implements IStrategyRepository {
             StrategyAwardEntity strategyAwardEntity = StrategyAwardEntity.builder()
                     .strategyId(strategyAward.getStrategyId())
                     .awardId(strategyAward.getAwardId())
+                    .awardTitle(strategyAward.getAwardTitle())
+                    .awardSubtitle(strategyAward.getAwardSubtitle())
                     .awardCount(strategyAward.getAwardCount())
                     .awardCountSurplus(strategyAward.getAwardCountSurplus())
                     .awardRate(strategyAward.getAwardRate())
+                    .sort(strategyAward.getSort())
                     .build();
 
             strategyAwardEntityList.add(strategyAwardEntity);
@@ -239,5 +242,21 @@ public class StrategyRepository implements IStrategyRepository {
         RDelayedQueue<Object> delayedQueue = redisService.getDelayedQueue(blockingQueue);
         //延迟队列，3s之后加入到延迟队列中去
         delayedQueue.offer(strategyAwardStockKeyVO, 3, TimeUnit.SECONDS);
+    }
+
+    @Override
+    public StrategyAwardEntity queryStrategyAwardEntity(Long strategyId, Integer awardId) {
+        StrategyAward strategyAward = strategyAwardDao.queryStrategyAward(strategyId, awardId);
+        if (null == strategyAward) return null;
+        return StrategyAwardEntity.builder()
+                .strategyId(strategyAward.getStrategyId())
+                .awardId(strategyAward.getAwardId())
+                .awardTitle(strategyAward.getAwardTitle())
+                .awardSubtitle(strategyAward.getAwardSubtitle())
+                .awardCount(strategyAward.getAwardCount())
+                .awardCountSurplus(strategyAward.getAwardCountSurplus())
+                .awardRate(strategyAward.getAwardRate())
+                .sort(strategyAward.getSort())
+                .build();
     }
 }
