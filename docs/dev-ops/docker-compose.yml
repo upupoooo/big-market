@@ -1,44 +1,49 @@
-# 命令执行 docker-compose up -d
-version: '3.9'
+version: '3.8'
+# 命令执行 docker-compose -f docker-compose-app.yml up -d
 services:
-  # Redis
-  redis:
-    image: redis:7.2.0
-    container_name: redis
-    restart: always
-    hostname: redis
-    privileged: true
-    ports:
-      - 6379:6379
-    volumes:
-      - ./redis/redis.conf:/usr/local/etc/redis/redis.conf
-    command: redis-server /usr/local/etc/redis/redis.conf
-    networks:
-      - my-network
-    healthcheck:
-      test: [ "CMD", "redis-cli", "ping" ]
-      interval: 10s
-      timeout: 5s
-      retries: 3
-
-  # RedisAdmin https://github.com/joeferner/redis-commander
-  redis-admin:
-    image: spryker/redis-commander:0.8.0
-    container_name: redis-admin
-    hostname: redis-commander
+  big-market-app:
+    image: upup/big-market-app:1.7
+    container_name: big-market-app
     restart: always
     ports:
-      - 8081:8081
+      - "8091:8091"
     environment:
-      - REDIS_HOSTS=local:redis:6379
-      - HTTP_USER=admin
-      - HTTP_PASSWORD=admin
+      - TZ=PRC
+      - SERVER_PORT=8091
+      - APP_CONFIG_API_VERSION=v1
+      - APP_CONFIG_CROSS_ORIGIN=*
+      - SPRING_DATASOURCE_USERNAME=root
+      - SPRING_DATASOURCE_PASSWORD=root
+      - SPRING_DATASOURCE_URL=jdbc:mysql://localhost:3306/big_market?useUnicode=true&characterEncoding=utf8&autoReconnect=true&zeroDateTimeBehavior=convertToNull&serverTimezone=UTC&useSSL=false
+      - SPRING_DATASOURCE_DRIVER_CLASS_NAME=com.mysql.jdbc.Driver
+      - SPRING_HIKARI_POOL_NAME=Retail_HikariCP
+      - REDIS_SDK_CONFIG_HOST=redis
+      - REDIS_SDK_CONFIG_PORT=6379
+    volumes:
+      - ./log:/data/log
     networks:
       - my-network
-    depends_on:
-      redis:
-        condition: service_healthy
-
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+  big-market-front-app:
+    container_name: big-market-front-app
+    image: upup/big-market-front-app:1.0
+    restart: always
+    networks:
+      - my-network
+    ports:
+      - 3000:3000
+    environment:
+      - API_HOST_URL=http://10.1.5.224:8091
+      - PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
+    healthcheck:
+      test: [ "CMD", "wget", "--spider", "-q", "http://0.0.0.0:3000/" ]
+      interval: 1m
+      timeout: 10s
+      retries: 3
 
 networks:
   my-network:
