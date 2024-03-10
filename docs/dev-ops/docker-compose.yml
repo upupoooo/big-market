@@ -2,7 +2,7 @@ version: '3.8'
 # 命令执行 docker-compose -f docker-compose-app.yml up -d
 services:
   big-market-app:
-    image: upup/big-market-app:1.7
+    image: kiritokp/big-market-app:1.0
     container_name: big-market-app
     restart: always
     ports:
@@ -30,14 +30,14 @@ services:
         max-file: "3"
   big-market-front-app:
     container_name: big-market-front-app
-    image: upup/big-market-front-app:1.0
+    image: kiritokp/big-market-front-app:1.0
     restart: always
     networks:
       - my-network
     ports:
       - 3000:3000
     environment:
-      - API_HOST_URL=http://10.1.5.224:8091
+      - API_HOST_URL=http://117.72.44.170:8091
       - PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
     healthcheck:
       test: [ "CMD", "wget", "--spider", "-q", "http://0.0.0.0:3000/" ]

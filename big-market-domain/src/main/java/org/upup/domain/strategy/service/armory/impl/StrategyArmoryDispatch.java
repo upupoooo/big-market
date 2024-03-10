@@ -33,7 +33,7 @@ public class StrategyArmoryDispatch implements IStrategyArmory, IStrategyDispatc
 
     @Override
     public boolean assembleLotteryStrategy(Long strategyId) {
-        //1、查询策略配置
+        //1、查询策略奖品配置
         List<StrategyAwardEntity> strategyAwardEntityList = repository.queryStrategyAwardList(strategyId);
         if (null == strategyAwardEntityList) return true;
 
@@ -68,6 +68,12 @@ public class StrategyArmoryDispatch implements IStrategyArmory, IStrategyDispatc
         return true;
     }
 
+    /**
+     * 根据概率总和计算出每个产品需要多少位置，在每个位置上放上对应产品，然后封装成map存入redis
+     * 比如 奖品101：:0.8的概率  奖品102：:0.2的概率，那么10个位置，其中2个位置放奖品102，,8个位置放奖品101
+     * @param key cacheKey
+     * @param strategyAwardEntityList 策略奖品列表
+     */
     private void assembleLotteryStrategy(String key, List<StrategyAwardEntity> strategyAwardEntityList) {
         //1、获取最小概率值
         BigDecimal minAwardRate = strategyAwardEntityList.stream().map(StrategyAwardEntity::getAwardRate).min(BigDecimal::compareTo).orElse(BigDecimal.ZERO);
