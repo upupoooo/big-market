@@ -1,6 +1,7 @@
 package org.upup.infrastructure.persistent.dao;
 
 import org.apache.ibatis.annotations.Mapper;
+import org.upup.infrastructure.persistent.po.RaffleActivityCount;
 
 /**
  * @author upup
@@ -9,6 +10,7 @@ import org.apache.ibatis.annotations.Mapper;
  */
 @Mapper
 public interface IRaffleActivityCountDao {
+    RaffleActivityCount queryRaffleActivityCountByActivityCountId(Long activityCountId);
 }
 
 

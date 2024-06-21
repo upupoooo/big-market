@@ -1,4 +1,4 @@
-package org.upup.test.domain;
+package org.upup.test.domain.strategy;
 
 import lombok.extern.slf4j.Slf4j;
 import org.junit.Before;

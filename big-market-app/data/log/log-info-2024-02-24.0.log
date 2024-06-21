@@ -644,7 +644,7 @@ Action:
 
 Consider defining a bean of type 'org.upup.domain.strategy.repository.IStrategyRepository' in your configuration.
 
-24-02-24.22:40:17.092 [main            ] ERROR TestContextManager     - Caught exception while allowing TestExecutionListener [org.springframework.test.context.web.ServletTestExecutionListener@77f1baf5] to prepare test instance [org.upup.test.domain.IStrategyArmoryTest@6c6017b9]
+24-02-24.22:40:17.092 [main            ] ERROR TestContextManager     - Caught exception while allowing TestExecutionListener [org.springframework.test.context.web.ServletTestExecutionListener@77f1baf5] to prepare test instance [org.upup.test.domain.strategy.IStrategyArmoryTest@6c6017b9]
 java.lang.IllegalStateException: Failed to load ApplicationContext
 	at org.springframework.test.context.cache.DefaultCacheAwareContextLoaderDelegate.loadContext(DefaultCacheAwareContextLoaderDelegate.java:98)
 	at org.springframework.test.context.support.DefaultTestContext.getApplicationContext(DefaultTestContext.java:124)
