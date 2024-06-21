@@ -1,16 +1,16 @@
 package org.upup.infrastructure.persistent.po;
 
 import lombok.Data;
-
 import java.util.Date;
 
 /**
  * @author upup
  * @description 抽奖活动表 持久化对象
- * @date 2024/3/11 00:07
+ * @date 2024/3/2 22:48
  */
 @Data
 public class RaffleActivity {
+
     /**
      * 自增ID
      */
@@ -76,5 +76,5 @@ public class RaffleActivity {
      */
     private Date updateTime;
 
-
 }
+

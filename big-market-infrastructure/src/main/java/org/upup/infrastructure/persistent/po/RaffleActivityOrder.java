@@ -7,10 +7,11 @@ import java.util.Date;
 /**
  * @author upup
  * @description 抽奖活动单 持久化对象
- * @date 2024/3/11 20:28
+ * @date 2024/6/21 16:38
  */
 @Data
 public class RaffleActivityOrder {
+
     /**
      * 自增ID
      */
@@ -62,3 +63,10 @@ public class RaffleActivityOrder {
     private Date updateTime;
 
 }
+
+
+
+
+
+
+
