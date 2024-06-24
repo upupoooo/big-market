@@ -1,6 +1,7 @@
 package org.upup.infrastructure.persistent.dao;
 
 import org.apache.ibatis.annotations.Mapper;
+import org.upup.infrastructure.persistent.po.RaffleActivityAccount;
 
 /**
  * @author upup
@@ -9,6 +10,10 @@ import org.apache.ibatis.annotations.Mapper;
  */
 @Mapper
 public interface IRaffleActivityAccountDao {
+    void insert(RaffleActivityAccount raffleActivityAccount);
+
+    int updateAccountQuota(RaffleActivityAccount raffleActivityAccount);
+
 }
 
 
