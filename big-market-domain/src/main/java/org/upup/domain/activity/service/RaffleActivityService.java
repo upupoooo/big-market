@@ -4,6 +4,7 @@ import org.apache.commons.lang3.RandomStringUtils;
 import org.springframework.stereotype.Service;
 import org.upup.domain.activity.model.aggregate.CreateOrderAggregate;
 import org.upup.domain.activity.model.entity.*;
+import org.upup.domain.activity.model.valobj.ActivitySkuStockKeyVO;
 import org.upup.domain.activity.model.valobj.OrderStateVO;
 import org.upup.domain.activity.repository.IActivityRepository;
 import org.upup.domain.activity.service.rule.factory.DefaultActivityChainFactory;
@@ -16,7 +17,7 @@ import java.util.Date;
  * @date 2024/6/21 19:01
  */
 @Service
-public class RaffleActivityService extends AbstractRaffleActivity {
+public class RaffleActivityService extends AbstractRaffleActivity implements ISkuStock {
 
     public RaffleActivityService(IActivityRepository activityRepository, DefaultActivityChainFactory defaultActivityChainFactory) {
         super(activityRepository, defaultActivityChainFactory);
@@ -55,5 +56,26 @@ public class RaffleActivityService extends AbstractRaffleActivity {
                 .activityOrderEntity(activityOrderEntity)
                 .build();
     }
+
+    @Override
+    public ActivitySkuStockKeyVO takeQueueValue() throws InterruptedException {
+        return activityRepository.takeQueueValue();
+    }
+
+    @Override
+    public void clearQueueValue() {
+        activityRepository.clearQueueValue();
+    }
+
+    @Override
+    public void updateActivitySkuStock(Long sku) {
+        activityRepository.updateActivitySkuStock(sku);
+    }
+
+    @Override
+    public void clearActivitySkuStock(Long sku) {
+        activityRepository.clearActivitySkuStock(sku);
+    }
+
 }
 

@@ -2,6 +2,8 @@ package org.upup.infrastructure.persistent.redis;
 
 import org.redisson.api.*;
 
+import java.util.concurrent.TimeUnit;
+
 /**
  * @author upup
  * @description Redis 服务
@@ -251,5 +253,8 @@ public interface IRedisService {
     Long getAtomicLong(String cacheKey);
 
     Boolean setNx(String key);
+
+    Boolean setNx(String key, long expireMillis, TimeUnit timeUnit);
+
 }
 

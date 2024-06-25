@@ -238,8 +238,8 @@ public class StrategyRepository implements IStrategyRepository {
     @Override
     public void awardStockConsumeSendQueue(StrategyAwardStockKeyVO strategyAwardStockKeyVO) {
         String cacheKey = Constants.RedisKey.STRATEGY_AWARD_COUNT_QUERY_KEY;
-        RBlockingQueue<Object> blockingQueue = redisService.getBlockingQueue(cacheKey);
-        RDelayedQueue<Object> delayedQueue = redisService.getDelayedQueue(blockingQueue);
+        RBlockingQueue<StrategyAwardStockKeyVO> blockingQueue = redisService.getBlockingQueue(cacheKey);
+        RDelayedQueue<StrategyAwardStockKeyVO> delayedQueue = redisService.getDelayedQueue(blockingQueue);
         //延迟队列，3s之后加入到延迟队列中去
         delayedQueue.offer(strategyAwardStockKeyVO, 3, TimeUnit.SECONDS);
     }
