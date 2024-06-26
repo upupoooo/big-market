@@ -1,6 +1,7 @@
 package org.upup.infrastructure.persistent.dao;
 
 import org.apache.ibatis.annotations.Mapper;
+import org.upup.domain.strategy.model.vo.StrategyAwardStockKeyVO;
 import org.upup.infrastructure.persistent.po.StrategyAward;
 
 import java.util.List;
@@ -20,4 +21,6 @@ public interface IStrategyAwardDao {
     StrategyAward queryStrategyAward(Long strategyId, Integer awardId);
 
     void reduceStrategyAwardStock(StrategyAward strategyAward);
+
+    void updateStrategyAwardStock(StrategyAwardStockKeyVO strategyAwardStockKeyVO);
 }

@@ -88,4 +88,11 @@ public interface IStrategyRepository {
      * @return 奖品信息
      */
     StrategyAwardEntity queryStrategyAwardEntity(Long strategyId, Integer awardId);
+
+    /**
+     * 更新奖品库存为0
+     * @param strategyAwardStockKeyVO 对象值对象
+     */
+    void updateStrategyAwardStock(StrategyAwardStockKeyVO strategyAwardStockKeyVO);
+
 }

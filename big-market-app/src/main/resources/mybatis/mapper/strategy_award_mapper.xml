@@ -52,6 +52,13 @@
           and award_count_surplus > 0
     </update>
 
+    <update id="updateStrategyAwardStock" parameterType="org.upup.infrastructure.persistent.po.StrategyAward">
+        update strategy_award
+        set award_count_surplus = 0
+        where strategy_id = #{strategyId}
+          and award_id = #{awardId}
+    </update>
+
     <select id="queryStrategyAward" parameterType="org.upup.infrastructure.persistent.po.StrategyAward"
             resultMap="dataMap">
         select strategy_id,

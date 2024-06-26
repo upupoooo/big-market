@@ -24,4 +24,5 @@ public interface IRaffleStock {
      */
     void reduceStrategyAwardStock(Long strategyId, Integer awardId);
 
+    void updateStrategyAwardStock(StrategyAwardStockKeyVO strategyAwardStockKeyVO);
 }

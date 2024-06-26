@@ -4,11 +4,13 @@ import lombok.extern.slf4j.Slf4j;
 import org.redisson.api.RBlockingQueue;
 import org.redisson.api.RDelayedQueue;
 import org.springframework.stereotype.Repository;
+import org.upup.domain.strategy.event.RaffleStockZeroMessageEvent;
 import org.upup.domain.strategy.model.entity.StrategyAwardEntity;
 import org.upup.domain.strategy.model.entity.StrategyEntity;
 import org.upup.domain.strategy.model.entity.StrategyRuleEntity;
 import org.upup.domain.strategy.model.vo.*;
 import org.upup.domain.strategy.repository.IStrategyRepository;
+import org.upup.infrastructure.event.EventPublisher;
 import org.upup.infrastructure.persistent.dao.*;
 import org.upup.infrastructure.persistent.po.*;
 import org.upup.infrastructure.persistent.redis.IRedisService;
@@ -44,6 +46,10 @@ public class StrategyRepository implements IStrategyRepository {
     private IRuleTreeNodeDao ruleTreeNodeDao;
     @Resource
     private IRuleTreeNodeLineDao ruleTreeNodeLineDao;
+    @Resource
+    private RaffleStockZeroMessageEvent raffleStockZeroMessageEvent;
+    @Resource
+    private EventPublisher eventPublisher;
 
     @Override
     public List<StrategyAwardEntity> queryStrategyAwardList(Long strategyId) {
@@ -220,7 +226,10 @@ public class StrategyRepository implements IStrategyRepository {
     @Override
     public Boolean subtractionAwardStock(String cacheKey) {
         long surplus = redisService.decr(cacheKey);
-        if (surplus < 0) {
+        if (surplus == 0) {
+            // 库存消耗没了以后，发送MQ消息，更新数据库库存
+            eventPublisher.publish(raffleStockZeroMessageEvent.topic(), raffleStockZeroMessageEvent.buildEventMessage(cacheKey));
+        } else if (surplus < 0) {
             // 库存小于0，恢复为0个
             redisService.setValue(cacheKey, 0);
             return false;
@@ -259,4 +268,11 @@ public class StrategyRepository implements IStrategyRepository {
                 .sort(strategyAward.getSort())
                 .build();
     }
+
+    @Override
+    public void updateStrategyAwardStock(StrategyAwardStockKeyVO strategyAwardStockKeyVO) {
+        strategyAwardDao.updateStrategyAwardStock(strategyAwardStockKeyVO);
+    }
+
+
 }
